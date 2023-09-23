@@ -1,20 +1,19 @@
-NAME = phonebook
+NAME = tests
 
-SRC = main.cpp \
-	  phonebook.cpp \
-	  contact.cpp \
+SRC = tests.cpp \
+	  Account.cpp \
 
 OBJ = $(SRC:.cpp=.o)
 
 FLAGS = -Werror -Wextra -Wall -std=c++98
 
-HEADERS = phonebook.hpp contact.hpp
+HEADERS = Account.hpp
 
 all: $(NAME)
 
 $(NAME): $(OBJ) $(HEADERS)
 
-.o: .cpp
+.o:
 	c++ $(SRC) $(FLAGS) -o $(NAME)
 
 

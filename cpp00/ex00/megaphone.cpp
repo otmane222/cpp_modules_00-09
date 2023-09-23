@@ -1,24 +1,21 @@
 #include <iostream>
+#include <cctype>
 
 int main(int ac, char **av)
 {
 	int 	i = 1;
 	int 	j = 0;
-	char	c;
 
 	if (ac == 1)
+	{
+		std::cout<<"* LOUD AND UNBEARABLE FEEDBACK NOISE *\n";
 		return (0);
+	}
 	while (av[i])
 	{
 		j = 0;
 		while (av[i][j])
-		{
-			c = av[i][j];
-			if (c >= 'a' && c <= 'z')
-				c -= 32;
-			std::cout<<c;
-			j++;
-		}
+			std::cout<< (char)(std::toupper(av[i][j++]));
 		i++;
 		std::cout<<" ";
 	}
