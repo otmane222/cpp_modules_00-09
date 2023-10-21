@@ -1,9 +1,9 @@
 #include "ClapTrap.hpp"
 
-ClapTrap::ClapTrap()
+ClapTrap::ClapTrap(/* args */)
 {
 	std::cout<<"ClapTrap default constructor has been called"<<std::endl;
-	this->name = "player";
+	this->name = "noName";
 	hitPoints = 10;
 	energyPoints = 10;
 	attackDamage = 0;
@@ -18,6 +18,14 @@ ClapTrap::ClapTrap(std::string name)
 	attackDamage = 0;
 }
 
+ClapTrap::ClapTrap(const ClapTrap& copy)
+{
+	std::cout<<"ClapTrap copy constructor has been called"<<std::endl;
+	this->name = copy.name;
+	hitPoints = copy.hitPoints;
+	energyPoints = copy.energyPoints;
+	attackDamage = copy.attackDamage;
+}
 
 void ClapTrap::attack(const std::string& target)
 {
@@ -37,24 +45,31 @@ void ClapTrap::attack(const std::string& target)
 
 void ClapTrap::takeDamage(unsigned int amount)
 {
-	std::cout<<"ClapTrap "<<name<<" has take "<<amount<<" of damage"<<std::endl;
-	if (amount >= (unsigned int)hitPoints)
+	if (!hitPoints)
+	{
+		std::cout<<"ClapTrap "<<name<<" is died!"<<std::endl;
+	}
+	else if (amount >= (unsigned int)hitPoints)
 	{
 		std::cout<<"ClapTrap "<<name<<" has been died!"<<std::endl;
 		hitPoints = 0;
 	}
 	else
 	{
+		std::cout<<"ClapTrap "<<name<<" has take "<<amount<<" of damage"<<std::endl;
 		hitPoints -= amount;
 	}
-
 }
 
 void ClapTrap::beRepaired(unsigned int amount)
 {
-	if (!this->hitPoints || !this->energyPoints)
+	if (!this->hitPoints)
 	{
-		std::cout<<"ClapTrap "<<name<<" has been died!"<<std::endl;
+		std::cout<<"ClapTrap "<<name<<" is died!"<<std::endl;
+	}
+	else if (!this->energyPoints)
+	{
+		std::cout<<"ClapTrap "<<name<<" has no energy!"<<std::endl;
 	}
 	else
 	{
@@ -64,18 +79,11 @@ void ClapTrap::beRepaired(unsigned int amount)
 	}
 }
 
-ClapTrap::ClapTrap(const ClapTrap& copy)
-{
-	std::cout<<"ClapTrap copy constructor has been called"<<std::endl;
-	this->name = copy.name;
-	hitPoints = copy.hitPoints;
-	energyPoints = copy.energyPoints;
-	attackDamage = copy.attackDamage;
-}
-
 ClapTrap& ClapTrap::operator=(const ClapTrap& src)
 {
 	std::cout<<"ClapTrap assigment has been called"<<std::endl;
+	if (this == &src)
+		return (*this);
 	this->name = src.name;
 	hitPoints = src.hitPoints;
 	energyPoints = src.energyPoints;

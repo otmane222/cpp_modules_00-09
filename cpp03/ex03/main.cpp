@@ -7,6 +7,7 @@ int	main()
 	ScavTrap	Kronos("Kronos");
 	FragTrap	Piper("Piper");
 
+	
 	Omega.attack("Kronos");
 	Kronos.takeDamage(20);
 	Kronos.beRepaired(15);

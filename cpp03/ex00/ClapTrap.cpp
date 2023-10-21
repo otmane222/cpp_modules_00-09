@@ -1,9 +1,9 @@
 #include "ClapTrap.hpp"
 
-ClapTrap::ClapTrap(/* args */)
+ClapTrap::ClapTrap()
 {
 	std::cout<<"ClapTrap default constructor has been called"<<std::endl;
-	this->name = "player";
+	this->name = "noName";
 	hitPoints = 10;
 	energyPoints = 10;
 	attackDamage = 0;
@@ -32,9 +32,9 @@ void ClapTrap::attack(const std::string& target)
 	if (!this->hitPoints || !this->energyPoints)
 	{
 		if (!this->energyPoints)
-			std::cout<<"ClapTrap "<<name<<" can't attack cause no energyPoints left"<<std::endl;
+			std::cout<<"ClapTrap "<<name<<" can't attack because no energyPoints left"<<std::endl;
 		else
-			std::cout<<"ClapTrap "<<name<<" can't attack cause no hitPoints left"<<std::endl;
+			std::cout<<"ClapTrap "<<name<<" can't attack because he's dead"<<std::endl;
 	}
 	else {
 		std::cout<<"ClapTrap "<<this->name<<" attacks "<<target<<", causing "<<attackDamage;
@@ -45,16 +45,31 @@ void ClapTrap::attack(const std::string& target)
 
 void ClapTrap::takeDamage(unsigned int amount)
 {
-	std::cout<<"ClapTrap "<<name<<" has take "<<amount<<" of damage"<<std::endl;
-	if (amount >= (unsigned int)hitPoints)
-		std::cout<<"ClapTrap "<<name<<" can't move!"<<std::endl;
+	if (!hitPoints)
+	{
+		std::cout<<"ClapTrap "<<name<<" is died!"<<std::endl;
+	}
+	else if (amount >= (unsigned int)hitPoints)
+	{
+		std::cout<<"ClapTrap "<<name<<" has been died!"<<std::endl;
+		hitPoints = 0;
+	}
+	else
+	{
+		std::cout<<"ClapTrap "<<name<<" has take "<<amount<<" of damage"<<std::endl;
+		hitPoints -= amount;
+	}
 }
 
 void ClapTrap::beRepaired(unsigned int amount)
 {
-	if (!this->hitPoints || !this->energyPoints)
+	if (!this->hitPoints)
 	{
-		std::cout<<"ClapTrap "<<name<<" can't move!"<<std::endl;
+		std::cout<<"ClapTrap "<<name<<" is died!"<<std::endl;
+	}
+	else if (!this->energyPoints)
+	{
+		std::cout<<"ClapTrap "<<name<<" has no energy!"<<std::endl;
 	}
 	else
 	{
@@ -67,6 +82,8 @@ void ClapTrap::beRepaired(unsigned int amount)
 ClapTrap& ClapTrap::operator=(const ClapTrap& src)
 {
 	std::cout<<"ClapTrap assigment has been called"<<std::endl;
+	if (this == &src)
+		return (*this);
 	this->name = src.name;
 	hitPoints = src.hitPoints;
 	energyPoints = src.energyPoints;

@@ -2,7 +2,7 @@ NAME = game
 
 CC = c++
 
-CFLAGS = -Wall -Wextra -Werror -std=c++98 -Wshadow -Wno-shadow
+CFLAGS = -Wall -Wextra -Werror -std=c++98
 
 RM = rm -rf
 

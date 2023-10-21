@@ -39,6 +39,8 @@ FragTrap::FragTrap(const FragTrap& copy)
 FragTrap& FragTrap::operator=(const FragTrap& src)
 {
 	std::cout<<"FragTrap: assigment has been called"<<std::endl;
+	if (this == &src)
+		return (*this);
 	this->name = src.name;
 	hitPoints = src.hitPoints;
 	energyPoints = src.energyPoints;

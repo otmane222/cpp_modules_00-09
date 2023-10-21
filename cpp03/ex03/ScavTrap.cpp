@@ -1,6 +1,6 @@
 #include "ScavTrap.hpp"
 
-ScavTrap::ScavTrap(/* args */) : ClapTrap()
+ScavTrap::ScavTrap(/* args */)
 {
 	std::cout<<"ScavTrap default constructor has been called"<<std::endl;
 	this->name = "Robot";
@@ -21,18 +21,25 @@ ScavTrap::ScavTrap(std::string target)
 void	ScavTrap::attack(const std::string& target)
 {
 	if (!this->hitPoints || !this->energyPoints)
-		std::cout<<"ScavTrap "<<name<<" can't attack"<<std::endl;
+	{
+		if (!this->energyPoints)
+			std::cout<<"ScavTrap "<<name<<" can't attack cause no energyPoints left"<<std::endl;
+		else
+			std::cout<<"ScavTrap "<<name<<" can't attack cause no hitPoints left"<<std::endl;
+	}
 	else {
-		std::cout<<"ScavTrap "<<this->name<<" attacks "<<target<<", causing a lost of "<<attackDamage;
-		std::cout<<" hit point!!"<<std::endl;
+		std::cout<<"ScavTrap "<<this->name<<" attacks "<<target<<", causing "<<attackDamage;
+		std::cout<<" points of damage!"<<std::endl;
 		energyPoints--;
 	}
 }
 
 void	ScavTrap::guardGate()
 {
-	if (!hitPoints || !energyPoints)
-		std::cout<<"ScavTrap "<<name<<" can't enter Gate keeper mode."<<std::endl;
+	if (!hitPoints)
+		std::cout<<"ScavTrap "<<name<<" is dead"<<std::endl;
+	else if (!energyPoints)
+		std::cout<<"ScavTrap "<<name<<" has no energy points"<<std::endl;
 	else
 	{
 		std::cout<<"ScavTrap "<<this->name<<" is now in Gate keeper mode."<<std::endl;
