@@ -19,7 +19,7 @@ Fixed &Fixed::operator=(const Fixed& src)
 	std::cout<<"Copy assignment operator called"<<std::endl;
 	if (this != &src)
 	{
-		fixed_point_value = getRawBits();
+		fixed_point_value = src.getRawBits();
 	}
 	return (*this);
 }

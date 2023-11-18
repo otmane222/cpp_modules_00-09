@@ -32,7 +32,7 @@ int main(int ac, char **av)
 	{
 		size_t	pos;
 		size_t	k = line.find(target);
-		while ((pos = line.find(target, k)) != std::string::npos) // std::string::npos == -1
+		while ((pos = line.find(target, k)) != std::string::npos) // std::string::npos == max_size_t
 		{
 			line.erase(pos, target.length());
 			line.insert(pos, replacement);
@@ -46,6 +46,5 @@ int main(int ac, char **av)
 	}
 	inputFile.close();
 	outputFile.close();
-
 	return (0);
 }
