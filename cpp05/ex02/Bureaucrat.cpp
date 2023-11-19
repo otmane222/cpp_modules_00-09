@@ -75,7 +75,6 @@ void	Bureaucrat::signForm(AForm *form) const
 		std::cout<< this->getName()<<" signed "<< form->getName() <<std::endl;
 	else
 		std::cout<< this->getName()<<" couldn’t sign "<< form->getName()<<" because grade wasn't high enough"<<std::endl;
-
 }
 
 Bureaucrat::~Bureaucrat()

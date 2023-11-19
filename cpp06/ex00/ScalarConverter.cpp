@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:04:04 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/11/18 21:14:38 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/11/19 17:28:30 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,17 @@ void ScalarConverter::convert(std::string data)
 			{
 				std::cout<<"char: impossible"<<std::endl;
 				std::cout<<"int: impossible"<<std::endl;
-				std::cout<<"float: "<<static_cast<float>(k)<<".0f"<<std::endl;
-				std::cout<<"double: "<<static_cast<double>(k)<<".0"<<std::endl;
+				if (j < 20)
+				{
+					k = std::stoll(data);
+					std::cout<<"float: "<<static_cast<float>(k)<<".0f"<<std::endl;
+					std::cout<<"double: "<<static_cast<double>(k)<<".0"<<std::endl;
+				}
+				else
+				{
+					std::cout<<"float: impossible"<<std::endl;
+					std::cout<<"double: impossible"<<std::endl;
+				}
 				exit(0);
 			}
 			k = std::stoll(data);
