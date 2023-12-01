@@ -77,7 +77,6 @@ void Character::unequip(int idx)
 {
 	if (idx >= 0 && idx <= 3)
 	{
-		inventory[idx] = NULL;
 		follower[idx] = 0;
 	}
 }

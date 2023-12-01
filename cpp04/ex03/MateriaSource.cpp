@@ -10,7 +10,8 @@ MateriaSource::MateriaSource(/* args */)
 
 void MateriaSource::learnMateria(AMateria* a)
 {
-	for (size_t i = 0; i < 4; i++)
+	size_t i = 0;
+	for (i = 0; i < 4; i++)
 	{
 		if (inventory[i] == NULL)
 		{
@@ -18,6 +19,8 @@ void MateriaSource::learnMateria(AMateria* a)
 			break ;
 		}
 	}
+	if (i == 4 && inventory[i] != a)
+		delete a;
 }
 
 AMateria* MateriaSource::createMateria(std::string const & type)
@@ -31,4 +34,11 @@ AMateria* MateriaSource::createMateria(std::string const & type)
 
 MateriaSource::~MateriaSource()
 {
+	for (size_t i = 0; i < 4; i++)
+	{
+		if (inventory[i] != NULL)
+		{
+			delete inventory[i];
+		}
+	}
 }

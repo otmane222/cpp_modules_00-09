@@ -1,6 +1,6 @@
 #include "Bureaucrat.hpp"
 
-Bureaucrat::Bureaucrat(/* args */)
+Bureaucrat::Bureaucrat(/* args */):  name("default"), grade(150)
 {
 }
 

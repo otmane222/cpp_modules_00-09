@@ -6,11 +6,22 @@
 #include "ICharacter.hpp"
 #include "Character.hpp"
 
+void l()
+{
+	system("leaks world");
+}
 
 int main()
 {
+	atexit(l);
 	IMateriaSource* src = new MateriaSource();
 	src->learnMateria(new Ice());
+	src->learnMateria(new Cure());
+	src->learnMateria(new Cure());
+	src->learnMateria(new Cure());
+	src->learnMateria(new Cure());
+	src->learnMateria(new Cure());
+	src->learnMateria(new Cure());
 	src->learnMateria(new Cure());
 	ICharacter* me = new Character("me");
 	AMateria* tmp;

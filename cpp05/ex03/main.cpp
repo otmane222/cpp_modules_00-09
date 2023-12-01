@@ -21,7 +21,6 @@ int main()
 	try
 	{	
 		f->execute(br);
-
 	}
 	catch(AForm::GradeTooLowException e)
 	{

@@ -11,7 +11,7 @@ SRCS =	main.cpp \
 		Character.cpp \
 		Cure.cpp \
 		Ice.cpp \
-		MateriaSource.cpp
+		MateriaSource.cpp \
 
 OBJS = $(SRCS:.cpp=.o)
 
@@ -34,4 +34,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: clean fclean re
+.PHONY: all clean fclean re

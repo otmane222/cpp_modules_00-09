@@ -6,11 +6,12 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:04:04 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/11/19 17:28:30 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/11/30 14:45:46 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ScalarConverter.hpp"
+#include <iomanip>
 
 ScalarConverter::ScalarConverter()
 {
@@ -171,9 +172,13 @@ void ScalarConverter::convert(std::string data)
 		std::cout<<"int: "<<static_cast<int>(d) <<std::endl;
 		std::cout<<"float: "<<static_cast<float>(d)<<"f"<<std::endl;
 		if (static_cast<int>(d) == d)
+		{
 			std::cout<<"double: "<<d<<".0"<<std::endl;
+		}
 		else
+		{
 			std::cout<<"double: "<<d<<std::endl;
+		}
 	}
 	if (type == 1)
 	{

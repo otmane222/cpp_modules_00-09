@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 09:52:29 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/11/18 14:10:14 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/11/23 10:43:42 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,12 @@ int main(int ac, char **av)
 	if (ac == 1)
 		return (1);
 	name = av[1];
-	ScalarConverter::convert(name);
+	try
+	{
+		ScalarConverter::convert(name);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
 }
