@@ -13,7 +13,7 @@ void l()
 
 int main()
 {
-	atexit(l);
+	// atexit(l);
 	IMateriaSource* src = new MateriaSource();
 	src->learnMateria(new Ice());
 	src->learnMateria(new Cure());

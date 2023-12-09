@@ -114,33 +114,6 @@ char	**ft_split(char const *s, char c)
 }
 // end ft_split // // // 
 
-bool isValidDate(const std::string& dateString)
-{
-	std::tm timeStruct = {};
-	std::istringstream dateStream(dateString);
-	dateStream >> std::get_time(&timeStruct, "%Y-%m-%d");
-
-	// if (dateStream.fail()) {
-	// 	std::cerr << "Error parsing date: " << dateString << std::endl;
-	// 	return false;
-	// }
-
-	// Validate the date
-	if (timeStruct.tm_year < 0 || timeStruct.tm_mon < 0 || timeStruct.tm_mday <= 0) {
-		std::cerr << "Invalid date: " << dateString << std::endl;
-		return false;
-	}
-
-	// Check if the date is valid using mktime
-	std::time_t t = std::mktime(&timeStruct);
-	if (t == -1) {
-		std::cerr << "Invalid date: " << dateString << std::endl;
-		return false;
-	}
-
-	return true;
-}
-
 bool	not_valid_input(std::string input, char c)
 {
 	if (input == "\n")

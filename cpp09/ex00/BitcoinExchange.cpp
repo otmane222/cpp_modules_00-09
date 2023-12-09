@@ -13,7 +13,6 @@ BitcoinExchange::BitcoinExchange(std::string filename)
 	std::string input;
 	std::ifstream	inputFile(filename.c_str());
 	std::tm timeStruct = {};
-	std::istringstream dateStream;
 
 	if (!std::getline(inputFile, input))
 	{
@@ -32,9 +31,17 @@ BitcoinExchange::BitcoinExchange(std::string filename)
 			std::cout<<"Error parsing"<<std::endl;
 			continue ;
 		}
-		dateStream.clear();
-		dateStream.str(input);
-		dateStream >> std::get_time(&timeStruct, "%Y-%m-%d,");
+		if (sscanf(input.c_str(), "%d-%d-%d,", &timeStruct.tm_year, &timeStruct.tm_mon, &timeStruct.tm_mday) == 3)
+		{
+			timeStruct.tm_year -= 1900;
+			timeStruct.tm_mon--;
+
+		}
+		else
+		{
+			std::cerr << "Failed to parse date" << std::endl;
+			exit(1);
+		}
 		int k = input.find_first_of(",");
 		std::istringstream ss(&input.at(k + 1));
 		if (ss.fail())
@@ -46,11 +53,6 @@ BitcoinExchange::BitcoinExchange(std::string filename)
 		if (val < 0)
 		{
 			std::cerr<<"Error in file *.csv"<<std::endl;
-			exit (1);
-		}
-		if (dateStream.fail())
-		{
-			std::cerr << "Error parsing date: " << input << std::endl;
 			exit (1);
 		}
 		else
@@ -81,7 +83,9 @@ BitcoinExchange & BitcoinExchange::operator=(const BitcoinExchange &c)
 }
 
 DateTime::DateTime(std::tm timeStruct) : timeStruct(timeStruct) {}
+
 DateTime::DateTime(const DateTime& c) {*this = c;}
+
 DateTime& DateTime::operator = (const DateTime& c)
 {
 	if (this != &c)
@@ -120,4 +124,5 @@ bool DateTime::operator!=(const DateTime& other) const
 {
 	return (std::mktime(const_cast<std::tm*>(&timeStruct)) != std::mktime(const_cast<std::tm*>(&other.timeStruct)));
 }
+
 DateTime::~DateTime(){}
