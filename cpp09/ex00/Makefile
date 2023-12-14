@@ -21,7 +21,6 @@ all: $(NAME) $(OBJS) $(HEADERS)
 $(NAME): $(OBJS) $(HEADERS)
 	$(CC)  $(FLAGS) $(OBJS) -o $(NAME)
 
-
 clean:
 	$(RM) $(OBJS)
 

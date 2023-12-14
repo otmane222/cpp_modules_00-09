@@ -7,23 +7,20 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <iomanip>
 
 
 class DateTime
 {
 	public:
-		std::tm timeStruct;
-		DateTime(std::tm timeStruct);
+		int	year;
+		int	month;
+		int	day;
+		DateTime(int year, int month, int day);
 		DateTime(const DateTime& c);
 		DateTime& operator = (const DateTime& c);
 
 		bool operator<(const DateTime& other) const;
-
-		bool operator<=(const DateTime& other) const;
-
-		bool operator>(const DateTime& other) const;
-
-		bool operator>=(const DateTime& other) const;
 
 		bool operator==(const DateTime& other) const;
 
@@ -45,3 +42,4 @@ class BitcoinExchange
 
 bool	not_valid(std::string input , char *s1, char *s2,char c);
 bool	not_valid_input(std::string input, char c);
+char	*ft_strtrim(char const *s1, char const *set);

@@ -1,14 +1,8 @@
 #include "RPN.hpp"
 
-void	lk(void)
-{
-	system("leaks RPN");
-}
-
 int main(int ac, char **av)
 {
-	atexit(lk);
-	if (ac == 1)
+	if (ac == 1 || av[1][0] == '\0')
 		return (std::cerr<<"Error no input"<<std::endl, 0);
 	std::string input;
 
@@ -16,7 +10,6 @@ int main(int ac, char **av)
 	RPN	a;
 
 	Node* root = a.BuildDTree(input);
-	(void)root;
 	std::cout<<a.executeTree(root)<<std::endl;
 	a.deleteTree(root);
 	return (0);

@@ -128,36 +128,43 @@ bool	not_valid(std::string input , char *s1, char *s2,char c)
 	size_t a = 0;
 	std::string data = s1;
 	std::string value = s2;
+
 	for (; input[a] == ' '; a++)
 		;
-	for (size_t i = 0; input[a] != c && input[a] != ' ' ; i++, a++)
+	if (!input[a] || input[a] == c)
+		return (true);
+	for (size_t i = 0; data[i] ; i++, a++)
 	{
 		if (input[a] != data[i])
-			return (delete s1 ,delete s2 , true);
+			return (true);
 	}
 	for (; input[a]  == ' '; a++)
 		;
 	if (input[a] == c)
 		a++;
 	else
-		return (delete s1 ,delete s2 , true);
+		return (true);
 	for (; input[a] == ' '; a++)
 		;
-	for (size_t i = 0; input[a] != '\0' && input[a] != ' ' ; i++, a++)
+	if (!input[a] || input[a] == c)
+		return (true);
+	for (size_t i = 0; value[i] ; i++, a++)
 	{
 		if (input[a] != value[i])
-			return (delete s1 ,delete s2 , true);
+			return (true);
 	}
 	for (; input[a]; a++)
 	{
 		if (input[a] != ' ')
-			return (delete s1 ,delete s2 , true);
+			return (true);
 	}
-	return (delete s1 ,delete s2 , false);
+	return (false);
 }
 
 int	count_num_of_char(const char *s, char c)
 {
+	if (!s)
+		exit (0);
 	int j = 0;
 	for (size_t i = 0; s[i]; i++)
 	{
@@ -169,6 +176,8 @@ int	count_num_of_char(const char *s, char c)
 
 int	ft_isdigit(const char *s)
 {
+	if (!s)
+		return (0);
 	for (size_t i = 0; s[i]; i++)
 	{
 		if (s[i] < '0' || s[i] > '9')
@@ -184,6 +193,8 @@ int	ft_isdigit2(const char *s)
 	int	flag = 0;
 	size_t i = 0;
 
+	if (!s || !s[0])
+		return(0);
 	if (s[i] == '.')
 	{
 		flag = 1;
@@ -257,16 +268,19 @@ void	parsing_file_input(std::string filename, std::map<DateTime, double> myMap)
 
 	std::string input;
 	std::ifstream	inputFile(filename.c_str());
-	std::istringstream dateStream;
+	if (!inputFile.is_open())
+		throw std::exception();
 
 	if (!std::getline(inputFile, input))
 	{
 		std::cerr<<"Empty file"<<std::endl;
 		exit (1);
 	}
-	if (not_valid(input, strdup("date"), strdup("value"), '|'))
+	std::string	name1 = "value";
+	std::string	name2 = "date";
+	if (not_valid(input, const_cast<char *>(name2.c_str()), const_cast<char *>(name1.c_str()), '|'))
 	{
-		std::cerr<<"Error in organzition"<<std::endl;
+		std::cerr<<"Error in organzition "<<std::endl;
 		exit (1);
 	}
 	while (std::getline(inputFile, input))
@@ -280,6 +294,12 @@ void	parsing_file_input(std::string filename, std::map<DateTime, double> myMap)
 			continue ;
 		}
 		pipe = ft_split(input.c_str(), '|');
+		if (!pipe[0] || !pipe[1])
+		{
+			std::cerr << "Error: invalide input => " << "'" <<input << "'" << std::endl;
+			free_all(pipe, ft_count_strings(input.c_str(), '|'));
+			continue ;
+		}
 		str = ft_strtrim(pipe[0], " \t");
 		j = count_num_of_char(str, '-');
 		if (j > 2 || j == 0)
@@ -289,7 +309,23 @@ void	parsing_file_input(std::string filename, std::map<DateTime, double> myMap)
 			delete str;
 			continue ;
 		}
+		j = count_num_of_char(input.c_str(), '-');
+		if (j > 2 || j == 0)
+		{
+			std::cerr << "Error: invalide input => " << "'" <<input << "'" << std::endl;
+			free_all(pipe, ft_count_strings(input.c_str(), '|'));
+			delete str;
+			continue ;
+		}
 		minus = ft_split(str, '-');
+		if (!minus[0] || !minus[1] || !minus[2])
+		{
+			std::cerr << "Error: invalide input => " << "'" <<input << "'" << std::endl;
+			free_all(pipe, ft_count_strings(input.c_str(), '|'));
+			free_all(minus, ft_count_strings(str, '-'));
+			delete str;
+			continue ;
+		}
 		if (!ft_isdigit(minus[0]) || !ft_isdigit(minus[1]) || !ft_isdigit(minus[2]))
 		{
 			std::cerr << "Error: invalide input => " << "'" <<input << "'" << std::endl;
@@ -308,8 +344,20 @@ void	parsing_file_input(std::string filename, std::map<DateTime, double> myMap)
 			delete ptr;
 			continue;
 		}
-		val = strtof(pipe[1], &endstr);
-		if (val > 999)
+		val = static_cast<double>(strtof(pipe[1], &endstr));
+		endstr = ft_strtrim(endstr, " \t");
+		if (*endstr)
+		{
+			std::cerr << "Error: invalide value => " << ptr << std::endl;
+			free_all(pipe, ft_count_strings(input.c_str(), '|'));
+			free_all(minus, ft_count_strings(str, '-'));
+			delete str;
+			delete ptr;
+			delete endstr;
+			continue ;
+		}
+		delete endstr;
+		if (val > 1000 || val < 0)
 		{
 			std::cerr << "Error: too large a number." << std::endl;
 			free_all(pipe, ft_count_strings(input.c_str(), '|'));
@@ -321,20 +369,19 @@ void	parsing_file_input(std::string filename, std::map<DateTime, double> myMap)
 		int y = std::atoi(minus[0]);
 		int m = std::atoi(minus[1]);
 		int d = std::atoi(minus[2]);
+		if (std::strlen(minus[1]) > 2 || std::strlen(minus[2]) > 2)
+		{
+			std::cerr << "Error: bad date => " <<y<<"-"<<m<<"-"<<d<< std::endl;
+			free_all(pipe, ft_count_strings(input.c_str(), '|'));
+			free_all(minus, ft_count_strings(str, '-'));
+			delete str;
+			delete ptr;
+			continue ;
+		}
 		free_all(pipe, ft_count_strings(input.c_str(), '|'));
 		free_all(minus, ft_count_strings(str, '-'));
-		// for (size_t i = 0; i < ft_count_strings(input.c_str(), '|'); i++)
-		// {
-		// 	delete[] pipe[i];
-		// }
-		// for (size_t i = 0; i < ft_count_strings(str, '-'); i++)
-		// {
-		// 	delete[] minus[i];
-		// }
-		
 		delete str;
 		delete ptr;
-
 		int	check = m % 2;
 		int	check2 = y % 4;
 		int days;
@@ -342,7 +389,7 @@ void	parsing_file_input(std::string filename, std::map<DateTime, double> myMap)
 			days = 28;
 		else
 			days = 29;
-		if ((check && d > 31) || (!check && m == 2 && d > days) || (!check && d > 30))
+		if (d > 31 || d < 1 || m < 1 || (check && d > 31) || (check && m > 8 && d > 30) || (!check && m == 2 && d > days) || (!check && m != 8 && m != 10 && m != 12 && d > 30) || (m > 12))
 		{
 			std::cerr << "Error: bad date => " <<y<<"-"<<m<<"-"<<d<< std::endl;
 			continue ;
@@ -352,39 +399,20 @@ void	parsing_file_input(std::string filename, std::map<DateTime, double> myMap)
 		int m1;
 		int d1;
 		int t1;
-		// std::stringstream a;
+
 		std::map<DateTime, double>::iterator it = myMap.begin();
 		std::map<DateTime, double>::iterator ite = myMap.end();
 		std::map<DateTime, double>::iterator tmp;
+
 		for (; it != ite; it++)
 		{
-		// std::cout<<"here"<<std::endl;
 			tmp = it;
-			y1 = it->first.timeStruct.tm_year + 1900;
-			m1 = it->first.timeStruct.tm_mon + 1;
-			d1 = it->first.timeStruct.tm_mday;
+			y1 = it->first.year;
+			m1 = it->first.month;
+			d1 = it->first.day;
 			t1 = (((y1 * 100) + m1) * 100) + d1;
 			if (t1 == t)
 			{
-				char c = '0';
-				std::cout<<y<<"-"<< c <<m<<"-"<<d<<" => "<< val <<" = " << val * it->second<<std::endl;
-				break ;
-			}
-
-			tmp++;
-			if (tmp != ite)
-			{
-				y1 = tmp->first.timeStruct.tm_year + 1900;
-				m1 = tmp->first.timeStruct.tm_mon + 1;
-				d1 = tmp->first.timeStruct.tm_mday;
-				t1 = (((y1 * 100) + m1) * 100) + d1;
-			}
-			if (t < t1 || tmp == ite)
-			{
-				y1 = it->first.timeStruct.tm_year + 1900;
-				m1 = it->first.timeStruct.tm_mon + 1;
-				d1 = it->first.timeStruct.tm_mday;
-				t1 = (((y1 * 100) + m1) * 100) + d1;
 				char c = '\0';
 				char c2 = '\0';
 				if (m <= 9)
@@ -392,6 +420,30 @@ void	parsing_file_input(std::string filename, std::map<DateTime, double> myMap)
 				if (d <= 9)
 					c2 = '0';
 				std::cout<<y<<"-"<<c<<m<<"-"<<c2<<d<<" => "<< val <<" = " << val * it->second<<std::endl;
+				break ;
+			}
+
+			tmp++;
+			if (tmp != ite)
+			{
+				y1 = tmp->first.year;
+				m1 = tmp->first.month;
+				d1 = tmp->first.day;
+				t1 = (((y1 * 100) + m1) * 100) + d1;
+			}
+			if (t < t1 || tmp == ite)
+			{
+				y1 = it->first.year;
+				m1 = it->first.month;
+				d1 = it->first.day;
+				t1 = (((y1 * 100) + m1) * 100) + d1;
+				char c = '\0';
+				char c2 = '\0';
+				if (m <= 9)
+					c = '0';
+				if (d <= 9)
+					c2 = '0';
+				std::cout<<y<<"-"<<c<<m<<"-"<<c2<<d<<" => "<< val <<" = " << val * it->second <<std::endl;
 				break ;
 			}
 		}
@@ -411,10 +463,9 @@ int main(int ac, char **av)
 		BitcoinExchange	b("data.csv");
 		parsing_file_input(filename, b.getMap());
 	}
-	catch(const std::exception& e)
+	catch(...)
 	{
-		std::cerr << e.what() << '\n';
+		std::cerr << "Error catched" << std::endl;
 	}
-
 	return (0);
 }

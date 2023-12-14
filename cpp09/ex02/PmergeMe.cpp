@@ -5,9 +5,20 @@ PmergeMe::PmergeMe()
 	
 }
 
+PmergeMe::~PmergeMe()
+{
+	
+}
+
 PmergeMe::PmergeMe(const PmergeMe &c)
 {
 	(void)c;
+}
+
+PmergeMe & PmergeMe::operator=(const PmergeMe &c)
+{
+	(void)c;
+	return(*this);
 }
 
 void	checkDav(char **av)
@@ -64,7 +75,7 @@ T fullData(char **av)
 		}
 		if (exist(deppo, val))
 		{
-			std::cout<<"Error 1"<<std::endl;
+			std::cout<<"Error duplicated numbers"<<std::endl;
 			exit(1);
 		}
 		deppo.push_back(val);
@@ -221,7 +232,6 @@ void PmergeMe::fordMergeSortInsertd (std::deque<size_t>& deppo, char **av)
 	std::deque<size_t>::iterator ity = pendElements.begin();
 	size_t	m;
 
-	std::deque<size_t>::iterator it;
 	for (size_t i = 0; ity != pendElements.end(); ity++, i++) // insert each element of pendelement into main chain using binary search
 	{
 		m = mainChain.size();
@@ -233,6 +243,7 @@ void PmergeMe::fordMergeSortInsertd (std::deque<size_t>& deppo, char **av)
 		binarySearchSort(mainChain, deppo[deppo.size() - 1], m / 2, m / 4);
 	}
 
+	std::deque<size_t>::iterator it;
 	it = mainChain.begin();
 	for (size_t i = 0; it != mainChain.end(); it++, i++)
 		deppo[i] = mainChain[i];
@@ -310,10 +321,4 @@ void PmergeMe::fordMergeSortInsertv (std::vector<size_t>& deppo, char **av)
 	for (; iterr != deppo.end(); iterr++)
 		std::cout<<*iterr<<" ";
 	std::cout<<std::endl<<std::endl;
-}
-
-PmergeMe & PmergeMe::operator=(const PmergeMe &c)
-{
-	(void)c;
-	return(*this);
 }

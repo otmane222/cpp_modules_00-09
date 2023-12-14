@@ -27,21 +27,21 @@ ClapTrap::ClapTrap(const ClapTrap& copy)
 	attackDamage = copy.attackDamage;
 }
 
-void ClapTrap::attack(const std::string& target)
-{
-	if (!this->hitPoints || !this->energyPoints)
-	{
-		if (!this->energyPoints)
-			std::cout<<"ClapTrap "<<name<<" can't attack cause no energyPoints left"<<std::endl;
-		else
-			std::cout<<"ClapTrap "<<name<<" can't attack cause no hitPoints left"<<std::endl;
-	}
-	else {
-		std::cout<<"ClapTrap "<<this->name<<" attacks "<<target<<", causing "<<attackDamage;
-		std::cout<<" points of damage!"<<std::endl;
-		energyPoints--;
-	}
-}
+// void ClapTrap::attack(const std::string& target)
+// {
+// 	if (!this->hitPoints || !this->energyPoints)
+// 	{
+// 		if (!this->energyPoints)
+// 			std::cout<<"ClapTrap "<<name<<" can't attack cause no energyPoints left"<<std::endl;
+// 		else
+// 			std::cout<<"ClapTrap "<<name<<" can't attack cause no hitPoints left"<<std::endl;
+// 	}
+// 	else {
+// 		std::cout<<"ClapTrap "<<this->name<<" attacks "<<target<<", causing "<<attackDamage;
+// 		std::cout<<" points of damage!"<<std::endl;
+// 		energyPoints--;
+// 	}
+// }
 
 void ClapTrap::takeDamage(unsigned int amount)
 {

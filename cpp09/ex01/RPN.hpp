@@ -4,8 +4,8 @@
 #include <stack>
 #include <string>
 
-class Node {
-	private:
+class Node
+{
 	public:
 		Node*	left;
 		Node*	right;

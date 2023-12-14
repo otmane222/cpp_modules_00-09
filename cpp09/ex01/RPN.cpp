@@ -24,12 +24,22 @@ Node*	RPN::BuildDTree(const std::string& input)
 	{
 		if (std::isdigit(input[i]))
 		{
+			if (std::isdigit(input[i + 1]))
+			{
+				std::cerr<<"Error"<<std::endl;
+				exit(1);
+			}
 			flag = 0;
 			dig = 1;
 			stacko.push(new Node(input[i]));
 		}
 		else if (input[i] == ' ' && flag == 0)
 		{
+			if (i == 0)
+			{
+				std::cerr<<"Error"<<std::endl;
+				exit(1);
+			}
 			dig = 0;
 			flag = 1;
 		}
@@ -77,6 +87,11 @@ Node*	RPN::BuildDTree(const std::string& input)
 	}
 	if (stacko.empty())
 		return (NULL);
+	if (stacko.size() >= 2)
+	{
+		std::cerr<<"Error"<<std::endl;
+		exit(1);
+	}
 	return (stacko.top());
 }
 
@@ -90,24 +105,20 @@ int RPN::executeTree(Node* root)
 	{
 	case ('+'):
 		return (executeTree(root->left) + executeTree(root->right));
-		break;
 	case ('-'):
 		return (executeTree(root->left) - executeTree(root->right));
-		break;
 	case ('*'):
 		return (executeTree(root->left) * executeTree(root->right));
-		break;
 	case ('/'):
+	{
+		int b = executeTree(root->right);
+		if (b == 0)
 		{
-			int b = executeTree(root->right);
-			if (b == 0)
-			{
-				std::cerr<<"Deviding by Zero, Are u crazy!!"<<std::endl;
-				exit (0);
-			}
-			return (executeTree(root->left) / b);
+			std::cerr<<"Deviding by Zero, Are u crazy!!"<<std::endl;
+			exit (0);
 		}
-		break;
+		return (executeTree(root->left) / b);
+	}
 	default:
 		return (0);
 	}
